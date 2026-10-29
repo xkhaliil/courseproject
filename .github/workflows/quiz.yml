@@ -1,0 +1,19 @@
+name: quiz
+
+on:
+  push:
+    paths:
+      - "features/quiz/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - ".github/workflows/quiz.yml"
+      - ".github/actions/**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      # The trailing ... also lints every package the quiz depends on, first.
+      - run: pnpm --filter "@platform/quiz..." lint
