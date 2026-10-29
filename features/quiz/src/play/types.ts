@@ -2,7 +2,7 @@ interface BaseQuestion {
   label: string
 }
 
-interface Choice {
+export interface Choice {
   label: string
   points: number
 }
