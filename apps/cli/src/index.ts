@@ -24,8 +24,7 @@ console.log()
 
 let total = 0
 
-for (const index in questions) {
-  const question = questions[index]
+for (const [index, question] of questions.entries()) {
   const answer = answers[index]
 
   const points = award(answer)
