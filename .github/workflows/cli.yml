@@ -1,0 +1,21 @@
+name: cli
+
+on:
+  push:
+    paths:
+      - "apps/cli/**"
+      - "features/quiz/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - ".github/workflows/cli.yml"
+      - ".github/actions/**"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      # The trailing ... also lints every package the CLI depends on, first.
+      - run: pnpm --filter "@platform/cli..." lint
+      - run: pnpm --filter @platform/cli start

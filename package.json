@@ -1,22 +1,23 @@
 {
   "name": "platform",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
-  "type": "module",
-  "workspaces": [
-    "apps/*",
-    "features/*"
-  ],
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^12.16.1",
+      "onFail": "download"
+    }
+  },
   "scripts": {
-    "lint": "npm run lint --workspaces",
-    "start": "npm start --workspace @platform/cli"
+    "lint": "nx run-many -t lint",
+    "lint-typecheck": "nx run-many -t lint-typecheck",
+    "lint-eslint": "nx run-many -t lint-eslint",
+    "lint-prettier": "nx run-many -t lint-prettier",
+    "lint-knip": "nx run-many -t lint-knip",
+    "start": "nx run cli:start --output-style=static"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint": "^10.13.0",
-    "globals": "^17.13.0",
-    "prettier": "^3.9.10",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.0"
+    "nx": "24.0.2"
   }
 }

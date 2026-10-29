@@ -4,13 +4,23 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "lint": "npm run lint-typecheck && npm run lint-prettier && npm run lint-eslint",
+    "lint": "pnpm run \"/^lint-.*/\"",
     "lint-typecheck": "tsc",
-    "lint-prettier": "prettier --check .",
     "lint-eslint": "eslint .",
+    "lint-prettier": "prettier --check .",
+    "lint-knip": "knip --directory ../.. --workspace @platform/cli",
     "start": "node ."
   },
   "dependencies": {
-    "@platform/quiz": "1.0.0"
+    "@platform/quiz": "workspace:*"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "catalog:",
+    "globals": "^17.13.0",
+    "knip": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "^8.72.0"
   }
 }
