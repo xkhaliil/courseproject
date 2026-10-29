@@ -1,14 +1,15 @@
 {
-  "name": "quiz",
+  "name": "platform",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
-  "main": "src/index.ts",
+  "workspaces": [
+    "apps/*",
+    "features/*"
+  ],
   "scripts": {
-    "lint": "npm run lint-typecheck && npm run lint-prettier && npm run lint-eslint",
-    "lint-typecheck": "tsc",
-    "lint-prettier": "prettier --check .",
-    "lint-eslint": "eslint .",
-    "start": "node ."
+    "lint": "npm run lint --workspaces",
+    "start": "npm start --workspace @platform/cli"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
