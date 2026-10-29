@@ -5,6 +5,7 @@ on:
     paths:
       - "apps/cli/**"
       - "features/quiz/**"
+      - "internal/tooling/**"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - ".github/workflows/cli.yml"

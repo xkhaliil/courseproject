@@ -191,15 +191,12 @@ importers:
         specifier: workspace:*
         version: link:../../features/quiz
     devDependencies:
-      '@eslint/js':
-        specifier: ^10.0.1
-        version: 10.0.1(eslint@10.13.0(jiti@2.7.0)(supports-color@7.2.0))
+      '@platform/tooling':
+        specifier: workspace:*
+        version: link:../../internal/tooling
       eslint:
         specifier: 'catalog:'
         version: 10.13.0(jiti@2.7.0)(supports-color@7.2.0)
-      globals:
-        specifier: ^17.13.0
-        version: 17.13.0
       knip:
         specifier: 'catalog:'
         version: 6.43.0
@@ -209,21 +206,15 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
-      typescript-eslint:
-        specifier: ^8.72.0
-        version: 8.72.1(eslint@10.13.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
 
   features/quiz:
     devDependencies:
-      '@eslint/js':
-        specifier: ^10.0.1
-        version: 10.0.1(eslint@10.13.0(jiti@2.7.0)(supports-color@7.2.0))
+      '@platform/tooling':
+        specifier: workspace:*
+        version: link:../../internal/tooling
       eslint:
         specifier: 'catalog:'
         version: 10.13.0(jiti@2.7.0)(supports-color@7.2.0)
-      globals:
-        specifier: ^17.13.0
-        version: 17.13.0
       knip:
         specifier: 'catalog:'
         version: 6.43.0
@@ -233,9 +224,31 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
+
+  internal/tooling:
+    dependencies:
+      '@eslint/js':
+        specifier: ^10.0.1
+        version: 10.0.1(eslint@10.13.0(jiti@2.7.0)(supports-color@7.2.0))
+      globals:
+        specifier: ^17.13.0
+        version: 17.13.0
       typescript-eslint:
         specifier: ^8.72.0
         version: 8.72.1(eslint@10.13.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+    devDependencies:
+      eslint:
+        specifier: 'catalog:'
+        version: 10.13.0(jiti@2.7.0)(supports-color@7.2.0)
+      knip:
+        specifier: 'catalog:'
+        version: 6.43.0
+      prettier:
+        specifier: 'catalog:'
+        version: 3.9.10
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
 
 packages:
 
