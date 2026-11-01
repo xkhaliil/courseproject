@@ -1,6 +1,6 @@
-import { type Outcome, type Question } from "./types.ts"
+import { type Outcome, type Question, type Quiz } from "./lib/types.ts"
 
-export const outcomes: Outcome[] = [
+const outcomes: Outcome[] = [
   {
     id: "spaghetti",
     title: "Spaghetti",
@@ -23,10 +23,11 @@ export const outcomes: Outcome[] = [
   },
 ]
 
-export const questions: Question[] = [
+const questions: Question[] = [
   {
     kind: "choice",
     label: "How do you like your Sunday?",
+    hint: "There is no wrong answer.",
     choices: [
       { label: "Cooking for friends", outcome: "ravioli", points: 3 },
       { label: "Reading with a blanket", outcome: "spaghetti", points: 1 },
@@ -46,3 +47,5 @@ export const questions: Question[] = [
     outcome: "penne",
   },
 ]
+
+export const quiz: Quiz = { outcomes, questions }

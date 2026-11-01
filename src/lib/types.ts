@@ -1,5 +1,10 @@
 export type OutcomeId = "spaghetti" | "penne" | "farfalle" | "ravioli"
 
+export interface Quiz {
+  outcomes: Outcome[]
+  questions: Question[]
+}
+
 export interface Outcome {
   id: OutcomeId
   title: string
@@ -8,9 +13,10 @@ export interface Outcome {
 
 interface BaseQuestion {
   label: string
+  hint?: string
 }
 
-interface Choice {
+export interface Choice {
   label: string
   outcome: OutcomeId
   points: number
