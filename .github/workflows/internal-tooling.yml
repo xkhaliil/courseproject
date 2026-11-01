@@ -1,0 +1,34 @@
+name: Internal - Tooling
+
+on:
+  push:
+    paths:
+      - .github/workflows/internal-tooling.yml
+      - internal/tooling/**
+
+env:
+  WORKSPACE: "@platform/tooling"
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: "Lint: Prettier"
+        run: pnpx nx run ${{ env.WORKSPACE }}:lint-prettier
