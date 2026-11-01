@@ -35,19 +35,19 @@ export class Session {
     this.status = "asking"
   }
 
-  public record(question: Question, answer: Answer) {
+  public record(question: Question, answer: Answer): Award {
     if (this.status !== "asking") {
       throw new Error("The quiz has not started")
     }
 
-    const value = award(question, answer)
-    if (!(value.outcome in this.tally)) {
-      throw new Error(`Invalid outcome "${value.outcome}"`)
+    const { outcome, points } = award(question, answer)
+    if (!(outcome in this.tally)) {
+      throw new Error(`Invalid outcome "${outcome}"`)
     }
 
-    this.tally[value.outcome] += value.points
+    this.tally[outcome] += points
 
-    return value
+    return { outcome, points }
   }
 
   public finish(): void {

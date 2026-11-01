@@ -5,15 +5,20 @@ export interface SavedGame {
   startedAt?: string
 }
 
-export function loadSavedGame(cached: string): SavedGame {
-  const parsed = JSON.parse(cached)
-  console.log(parsed)
+export function loadSavedGame(saved: string): SavedGame {
+  let value: unknown
 
-  if (!isSavedGame(parsed)) {
-    throw new Error("Invalid save.")
+  try {
+    value = JSON.parse(saved)
+  } catch {
+    throw new Error("Invalid save file.")
   }
 
-  return parsed
+  if (!isSavedGame(value)) {
+    throw new Error("Invalid save structure.")
+  }
+
+  return value
 }
 
 function isSavedGame(value: unknown): value is SavedGame {
@@ -36,7 +41,7 @@ function isSavedGame(value: unknown): value is SavedGame {
   return true
 }
 
-export function isAnswer(value: unknown): value is Answer {
+function isAnswer(value: unknown): value is Answer {
   if (typeof value !== "object" || value === null) {
     return false
   }
@@ -65,7 +70,7 @@ export function isAnswer(value: unknown): value is Answer {
   return false
 }
 
-export function isChoice(value: unknown): value is Choice {
+function isChoice(value: unknown): value is Choice {
   if (typeof value !== "object" || value === null) {
     return false
   }
