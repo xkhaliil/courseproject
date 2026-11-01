@@ -1,0 +1,22 @@
+{
+  "name": "@platform/tooling",
+  "version": "1.0.0",
+  "exports": {
+    "./eslint": "./src/eslint/eslint.mjs",
+    "./prettier": "./src/prettier/prettier.mjs",
+    "./typescript": "./src/typescript/typescript.json",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "lint": "pnpm run \"/^lint-.*/\"",
+    "lint-prettier": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "catalog:",
+    "globals": "^17.13.0",
+    "prettier": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "^8.72.0"
+  }
+}

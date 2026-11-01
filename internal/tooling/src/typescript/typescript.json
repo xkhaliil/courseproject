@@ -9,6 +9,5 @@
     "erasableSyntaxOnly": true,
     "noEmit": true,
     "verbatimModuleSyntax": true
-  },
-  "include": ["src"]
+  }
 }

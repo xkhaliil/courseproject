@@ -1,10 +1,17 @@
-interface BaseQuestion {
-  label: string
+export interface Quiz {
+  outcomes: Outcome[]
+  questions: Question[]
 }
 
-interface Choice {
+export interface Outcome {
+  id: string
+  title: string
+  description: string
+}
+
+interface BaseQuestion {
   label: string
-  points: number
+  hint?: string
 }
 
 interface ChoiceQuestion extends BaseQuestion {
@@ -16,10 +23,12 @@ interface ScaleQuestion extends BaseQuestion {
   kind: "scale"
   low: string
   high: string
+  outcome: string
 }
 
 interface YesNoQuestion extends BaseQuestion {
   kind: "yesno"
+  outcome: string
 }
 
 export type Question = ChoiceQuestion | ScaleQuestion | YesNoQuestion
@@ -40,3 +49,14 @@ interface YesNoAnswer {
 }
 
 export type Answer = ChoiceAnswer | ScaleAnswer | YesNoAnswer
+
+export interface Choice {
+  label: string
+  outcome: string
+  points: number
+}
+
+export interface Award {
+  outcome: string
+  points: number
+}
