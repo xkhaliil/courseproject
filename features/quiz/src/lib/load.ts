@@ -7,6 +7,7 @@ export interface SavedGame {
 
 export function loadSavedGame(cached: string): SavedGame {
   const parsed = JSON.parse(cached)
+  console.log(parsed)
 
   if (!isSavedGame(parsed)) {
     throw new Error("Invalid save.")
@@ -73,7 +74,7 @@ export function isChoice(value: unknown): value is Choice {
     return false
   }
 
-  if (!("outcome" in value) || typeof value.outcome === "string") {
+  if (!("outcome" in value) || typeof value.outcome !== "string") {
     return false
   }
 

@@ -4,7 +4,7 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "lint": "npm run lint-typecheck && npm run lint-prettier && npm run lint-eslint",
+    "lint": "pnpm run \"/^lint-.*/\"",
     "lint-typecheck": "tsc",
     "lint-prettier": "prettier --check .",
     "lint-eslint": "eslint .",
