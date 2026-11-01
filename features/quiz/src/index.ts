@@ -25,11 +25,3 @@ const result = session.result()
 
 console.log(`You are: ${result.title}`)
 console.log(result.description)
-
-try {
-  loadSavedGame('{"answers":[{"kind":"scale","value":"five"}]}')
-} catch (error) {
-  if (error instanceof Error) {
-    console.log(error.message)
-  }
-}
