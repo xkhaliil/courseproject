@@ -1,8 +1,16 @@
-import { quiz } from "./data.ts"
-import { loadSavedGame } from "./lib/load.ts"
-import { show } from "./lib/quiz.ts"
-import { Session } from "./lib/session.ts"
+import { type Quiz, Session, show } from "@platform/quiz/play"
+import { loadSavedGame } from "@platform/quiz/saved"
+
 import { savedGame } from "./saved.ts"
+import { loadQuiz } from "@platform/quiz/quizzes"
+
+let quiz: Quiz
+try {
+  quiz = await loadQuiz("pasta")
+} catch (error) {
+  console.error(error instanceof Error ? error.message : error)
+  process.exit(1)
+}
 
 const session = new Session(quiz.outcomes)
 const { answers } = loadSavedGame(savedGame)

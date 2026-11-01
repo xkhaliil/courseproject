@@ -1,30 +1,25 @@
+import { award } from "./quiz.ts"
 import {
   type Answer,
+  type Award,
   type Outcome,
-  type OutcomeId,
   type Question,
 } from "./types.ts"
 
 export type Status = "waiting" | "asking" | "done"
 
-interface Award {
-  outcome: OutcomeId
-  points: number
-}
-
 export class Session {
-  private tally: Record<OutcomeId, number> = {
-    spaghetti: 0,
-    penne: 0,
-    farfalle: 0,
-    ravioli: 0,
-  }
+  private tally: Record<string, number> = {}
 
   private outcomes: Outcome[]
   private status: Status = "waiting"
 
   constructor(outcomes: Outcome[]) {
     this.outcomes = outcomes
+
+    for (const outcome of outcomes) {
+      this.tally[outcome.id] = 0
+    }
   }
 
   public start(): void {
@@ -77,24 +72,4 @@ export class Session {
 
     return best
   }
-}
-
-function award(question: Question, answer: Answer): Award {
-  if (question.kind !== answer.kind) {
-    throw new Error("The answer does not match the question")
-  }
-
-  if (question.kind === "choice" && answer.kind === "choice") {
-    return { outcome: answer.picked.outcome, points: answer.picked.points }
-  }
-
-  if (question.kind === "scale" && answer.kind === "scale") {
-    return { outcome: question.outcome, points: answer.value }
-  }
-
-  if (question.kind === "yesno" && answer.kind === "yesno") {
-    return { outcome: question.outcome, points: answer.value ? 1 : 0 }
-  }
-
-  throw new Error("Unknown kind")
 }
