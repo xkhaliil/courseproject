@@ -1,5 +1,5 @@
 {
-  "name": "quiz",
+  "name": "@platform/quiz",
   "version": "1.0.0",
   "type": "module",
   "main": "src/index.ts",
@@ -12,11 +12,9 @@
     "start": "node ."
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@platform/tooling": "workspace:*",
     "eslint": "catalog:",
-    "globals": "^17.13.0",
     "prettier": "catalog:",
-    "typescript": "catalog:",
-    "typescript-eslint": "^8.72.0"
+    "typescript": "catalog:"
   }
 }

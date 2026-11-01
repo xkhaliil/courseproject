@@ -1,14 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "NodeNext",
-    "lib": ["ESNext", "DOM"],
-
-    "strict": true,
-    "allowImportingTsExtensions": true,
-    "erasableSyntaxOnly": true,
-    "noEmit": true,
-    "verbatimModuleSyntax": true
-  },
+  "extends": "@platform/tooling/typescript",
   "include": ["src"]
 }

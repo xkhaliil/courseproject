@@ -1,0 +1,39 @@
+name: Features - Quiz
+
+on:
+  push:
+    paths:
+      - .github/workflows/features-quiz.yml
+      - internal/tooling/**
+      - features/quiz/**
+
+env:
+  WORKSPACE: "@platform/quiz"
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: "Lint: Typecheck"
+        run: pnpx nx run ${{ env.WORKSPACE }}:lint-typecheck
+      - name: "Lint: ESLint"
+        run: pnpx nx run ${{ env.WORKSPACE }}:lint-eslint
+      - name: "Lint: Prettier"
+        run: pnpx nx run ${{ env.WORKSPACE }}:lint-prettier

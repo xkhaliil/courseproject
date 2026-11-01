@@ -1,16 +1,8 @@
-import jseslint from "@eslint/js"
-import globals from "globals"
-import tseslint from "typescript-eslint"
-import { defineConfig, globalIgnores } from "eslint/config"
+import config from "@platform/tooling/eslint"
 
-export default defineConfig([
-  globalIgnores(["dist"]),
+export default [
+  ...config,
   {
-    files: ["**/*.{ts,tsx}"],
-    extends: [jseslint.configs.recommended, tseslint.configs.recommended],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-    },
+    rules: {},
   },
-])
+]
