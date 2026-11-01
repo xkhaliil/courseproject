@@ -15,7 +15,7 @@
     "lint-eslint": "nx run-many -t lint-eslint",
     "lint-prettier": "nx run-many -t lint-prettier",
     "clean": "nx run-many -t clean && nx reset",
-    "start": "nx run quiz:start"
+    "start": "nx run cli:start"
   },
   "devDependencies": {
     "nx": "^24.0.1"

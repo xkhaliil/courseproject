@@ -1,4 +1,4 @@
-import { type Answer } from "./lib/types.ts"
+import { type Answer } from "@platform/quiz/play"
 
 const initialAnswers: Answer[] = [
   {

@@ -9,9 +9,7 @@
   },
   "scripts": {
     "lint": "pnpm run \"/^lint-.*/\"",
-    "lint-prettier": "prettier --check .",
-    "clean": "rm -rf node_modules/.cache tsconfig.tsbuildinfo",
-    "start": "node ."
+    "lint-prettier": "prettier --check ."
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
