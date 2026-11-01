@@ -7,7 +7,7 @@ import {
 
 export type Status = "waiting" | "asking" | "done"
 
-export interface Award {
+interface Award {
   outcome: OutcomeId
   points: number
 }
@@ -41,6 +41,9 @@ export class Session {
     }
 
     const value = award(question, answer)
+    if (!(value.outcome in this.tally)) {
+      throw new Error(`Invalid outcome "${value.outcome}"`)
+    }
 
     this.tally[value.outcome] += value.points
 
