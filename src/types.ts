@@ -2,12 +2,14 @@ interface BaseQuestion {
   label: string
 }
 
+interface Choice {
+  label: string
+  points: number
+}
+
 interface ChoiceQuestion extends BaseQuestion {
   kind: "choice"
-  choices: Array<{
-    label: string
-    points: number
-  }>
+  choices: Choice[]
 }
 
 interface ScaleQuestion extends BaseQuestion {
@@ -21,3 +23,20 @@ interface YesNoQuestion extends BaseQuestion {
 }
 
 export type Question = ChoiceQuestion | ScaleQuestion | YesNoQuestion
+
+interface ChoiceAnswer {
+  kind: "choice"
+  picked: Choice
+}
+
+interface ScaleAnswer {
+  kind: "scale"
+  value: number
+}
+
+interface YesNoAnswer {
+  kind: "yesno"
+  value: boolean
+}
+
+export type Answer = ChoiceAnswer | ScaleAnswer | YesNoAnswer
