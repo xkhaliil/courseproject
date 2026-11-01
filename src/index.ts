@@ -1,25 +1,34 @@
-import { questions } from "./data.ts"
-import { award, show } from "./quiz.ts"
+import { outcomes, questions } from "./data.ts"
+import { show } from "./quiz.ts"
+import { Session } from "./session.ts"
 import { type Answer } from "./types.ts"
 
 const answers: Answer[] = [
-  { kind: "choice", picked: { label: "A long walk", points: 2 } },
+  {
+    kind: "choice",
+    picked: { label: "A long walk", outcome: "penne", points: 2 },
+  },
   { kind: "scale", value: 2 },
   { kind: "yesno", value: true },
 ]
 
-let total = 0
+const session = new Session(outcomes)
+
+session.start()
 
 for (const index in questions) {
   const question = questions[index]
   const answer = answers[index]
 
-  const points = award(answer)
-  total += points
+  const { outcome, points } = session.record(question, answer)
 
   console.log(show(question))
-  console.log(`Answer worth ${points} points`)
-  console.log()
+  console.log(`Answer worth ${points} points for ${outcome}`)
 }
 
-console.log(`Total ${total} points`)
+session.finish()
+
+const result = session.result()
+
+console.log(`You are: ${result.title}`)
+console.log(result.description)
