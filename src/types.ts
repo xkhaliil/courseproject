@@ -1,9 +1,18 @@
+export type OutcomeId = "spaghetti" | "penne" | "farfalle" | "ravioli"
+
+export interface Outcome {
+  id: OutcomeId
+  title: string
+  description: string
+}
+
 interface BaseQuestion {
   label: string
 }
 
 interface Choice {
   label: string
+  outcome: OutcomeId
   points: number
 }
 
@@ -16,10 +25,12 @@ interface ScaleQuestion extends BaseQuestion {
   kind: "scale"
   low: string
   high: string
+  outcome: OutcomeId
 }
 
 interface YesNoQuestion extends BaseQuestion {
   kind: "yesno"
+  outcome: OutcomeId
 }
 
 export type Question = ChoiceQuestion | ScaleQuestion | YesNoQuestion
