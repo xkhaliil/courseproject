@@ -1,25 +1,41 @@
-import { type Answer, type Award, type Question } from "./types.ts"
+import { type Answer } from "./answer.ts"
+import { type Prompt, type Question } from "./question.ts"
 
-export function show(question: Question): string {
-  const hint = question.hint ? `\nHint: ${question.hint}` : ""
+export interface Quiz {
+  outcomes: Outcome[]
+  questions: Question[]
+}
 
-  if (question.kind === "choice") {
-    const choices = question.choices.map(
-      (choice, index) => `  ${index + 1}. ${choice.label}`,
-    )
+export interface QuizResponse {
+  outcomes: Outcome[]
+  prompts: Prompt[]
+}
 
-    return `${question.label}\n${choices.join("\n")}${hint}`
+export interface Award {
+  outcome: string
+  points: number
+}
+
+export interface Outcome {
+  id: string
+  title: string
+  description: string
+}
+
+export function isQuiz(value: unknown): value is Quiz {
+  if (typeof value !== "object" || value === null) {
+    return false
   }
 
-  if (question.kind === "scale") {
-    return `${question.label} (1 = ${question.low}, 5 = ${question.high})${hint}`
+  return true
+}
+
+export function isOutcome(value: unknown): value is Outcome {
+  if (typeof value !== "object" || value === null) {
+    return false
   }
 
-  if (question.kind === "yesno") {
-    return `${question.label} (yes or no)${hint}`
-  }
-
-  throw new Error("Unknown kind")
+  return true
 }
 
 export function award(question: Question, answer: Answer): Award {

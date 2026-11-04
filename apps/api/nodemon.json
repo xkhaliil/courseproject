@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "ext": "ts",
+  "execMap": {
+    "ts": "node"
+  },
+  "watch": ["./src", "../../features/quiz/src"]
+}

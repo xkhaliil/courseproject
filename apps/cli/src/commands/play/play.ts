@@ -1,4 +1,4 @@
-import { type Quiz, Session } from "@platform/quiz/play"
+import { type Quiz, PlayState } from "@platform/quiz/play"
 import { loadQuiz } from "@platform/quiz/quizzes"
 
 import ask from "./ask.ts"
@@ -20,22 +20,22 @@ export default async function play(
     process.exit(1)
   }
 
-  const session = new Session(quiz.outcomes)
+  const state = new PlayState(quiz.outcomes)
 
-  session.start()
+  state.start()
 
   for (const index in quiz.questions) {
     const question = quiz.questions[index]
 
     const answer = await ask(question)
 
-    session.record(question, answer)
+    state.record(question, answer)
   }
 
-  session.finish()
+  state.finish()
   console.log()
 
-  const result = session.result()
+  const result = state.result()
 
   console.log(`You are: ${result.title}`)
   console.log(result.description)
