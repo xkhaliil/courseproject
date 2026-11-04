@@ -1,14 +1,14 @@
 import { confirm, input, select } from "@inquirer/prompts"
-import { type Answer, type Question } from "@platform/quiz/play"
+import { type Submission, type Prompt } from "@platform/quiz/play"
 
-export default async function ask(question: Question): Promise<Answer> {
-  const hint = question.hint ? `\nHint: ${question.hint}` : ""
-  const message = `${question.label}${hint}`
+export default async function ask(prompt: Prompt): Promise<Submission> {
+  const hint = prompt.hint ? `\nHint: ${prompt.hint}` : ""
+  const message = `${prompt.label}${hint}`
 
-  if (question.kind === "choice") {
+  if (prompt.kind === "choice") {
     const picked = await select({
       message,
-      choices: question.choices.map((choice) => ({
+      choices: prompt.choices.map((choice) => ({
         name: choice.label,
         value: choice,
       })),
@@ -17,9 +17,9 @@ export default async function ask(question: Question): Promise<Answer> {
     return { kind: "choice", picked }
   }
 
-  if (question.kind === "scale") {
+  if (prompt.kind === "scale") {
     const value = await input({
-      message: `${message} (1 = ${question.low}, 5 = ${question.high})`,
+      message: `${message} (1 = ${prompt.low}, 5 = ${prompt.high})`,
       validate: (text) => {
         const number = Number(text)
 
@@ -32,7 +32,7 @@ export default async function ask(question: Question): Promise<Answer> {
     return { kind: "scale", value: Number(value) }
   }
 
-  if (question.kind === "yesno") {
+  if (prompt.kind === "yesno") {
     const value = await confirm({ message })
 
     return { kind: "yesno", value }
