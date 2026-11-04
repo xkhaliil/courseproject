@@ -12,7 +12,9 @@
     "start": "node ."
   },
   "dependencies": {
-    "@platform/quiz": "workspace:*"
+    "@inquirer/prompts": "^8.7.5",
+    "@platform/quiz": "workspace:*",
+    "commander": "^15.0.0"
   },
   "devDependencies": {
     "@platform/tooling": "workspace:*",

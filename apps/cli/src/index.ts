@@ -1,43 +1,19 @@
-import { type Quiz, Session, show } from "@platform/quiz/play"
-import { loadSavedGame } from "@platform/quiz/saved"
+import { program } from "commander"
 
-import { savedGame } from "./saved.ts"
-import { loadQuiz } from "@platform/quiz/quizzes"
+import play from "./commands/play/index.ts"
 
-let quiz: Quiz
+program.name("quiz").description("Take a quiz in the terminal")
+
+program
+  .command("play")
+  .description("Play a quiz")
+  .argument("[quiz]", "The quiz to take", "pasta")
+  .option("-n, --name <name>", "Your name")
+  .action(play)
+
 try {
-  quiz = await loadQuiz("pasta")
+  await program.parseAsync()
 } catch (error) {
   console.error(error instanceof Error ? error.message : error)
-  process.exit(1)
+  process.exitCode = 1
 }
-
-const session = new Session(quiz.outcomes)
-const { answers } = loadSavedGame(savedGame)
-
-session.start()
-
-console.log("## Questions")
-console.log()
-
-for (const index in quiz.questions) {
-  const question = quiz.questions[index]
-  const answer = answers[index]
-
-  const { outcome, points } = session.record(question, answer)
-
-  console.log(show(question))
-  console.log(`Your answer worth ${points} points for ${outcome}`)
-  console.log()
-}
-
-session.finish()
-
-console.log("## Result")
-console.log()
-
-const result = session.result()
-
-console.log(`You are: ${result.title}`)
-console.log(result.description)
-console.log()
