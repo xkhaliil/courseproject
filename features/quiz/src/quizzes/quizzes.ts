@@ -12,7 +12,7 @@ export async function loadQuiz(name: string): Promise<Quiz> {
     text = await readFile(file, "utf8")
   } catch (error) {
     if (error instanceof Error && "code" in error && error.code === "ENOENT") {
-      throw new Error(`There is no quiz called "${name}"`, { cause: error })
+      throw new Error(`There is no quiz called "${name}".`, { cause: error })
     }
 
     throw error
