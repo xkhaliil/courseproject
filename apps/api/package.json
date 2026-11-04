@@ -1,0 +1,27 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "pnpm run \"/^lint-.*/\"",
+    "lint-typecheck": "tsc",
+    "lint-prettier": "prettier --check .",
+    "lint-eslint": "eslint .",
+    "clean": "rm -rf node_modules/.cache tsconfig.tsbuildinfo",
+    "dev": "nodemon .",
+    "start": "node ."
+  },
+  "dependencies": {
+    "@platform/quiz": "workspace:*",
+    "fastify": "^5.12.7"
+  },
+  "devDependencies": {
+    "@platform/tooling": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "nodemon": "^3.1.14",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
+  }
+}

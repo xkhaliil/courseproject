@@ -1,14 +1,10 @@
-import { award } from "./quiz.ts"
-import {
-  type Answer,
-  type Award,
-  type Outcome,
-  type Question,
-} from "./types.ts"
+import { type Answer } from "./answer.ts"
+import { type Question } from "./question.ts"
+import { type Award, type Outcome, award } from "./quiz.ts"
 
 export type Status = "waiting" | "asking" | "done"
 
-export class Session {
+export class PlayState {
   private tally: Record<string, number> = {}
 
   private outcomes: Outcome[]

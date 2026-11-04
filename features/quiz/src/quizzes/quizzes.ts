@@ -1,7 +1,16 @@
-import { readFile } from "node:fs/promises"
-import path from "node:path"
+import { readdir, readFile } from "node:fs/promises"
+import path, { basename } from "node:path"
 
 import { type Quiz, isQuiz } from "../play/index.ts"
+
+export async function listQuizzes(): Promise<string[]> {
+  const files = await readdir(import.meta.dirname)
+  const quizzes = files
+    .filter((name) => name.endsWith(".json"))
+    .map((name) => basename(name, ".json"))
+
+  return quizzes
+}
 
 export async function loadQuiz(name: string): Promise<Quiz> {
   const file = path.join(import.meta.dirname, `${name}.json`)
