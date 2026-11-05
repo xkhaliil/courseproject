@@ -13,7 +13,7 @@ const quizzesPlugin: FastifyPluginAsync = async (fastify) => {
     }
   })
 
-  fastify.get<{ Params: { quizId: string }; Body: QuizResponse }>(
+  fastify.get<{ Params: { quizId: string }; Reply: QuizResponse }>(
     "/quizzes/:quizId",
     async (request) => {
       const quizId = request.params.quizId
@@ -21,9 +21,10 @@ const quizzesPlugin: FastifyPluginAsync = async (fastify) => {
       const quiz = await loadQuiz(quizId)
 
       return {
+        id: quizId,
         outcomes: quiz.outcomes,
         prompts: quiz.questions.map(toPrompt),
-      } satisfies QuizResponse
+      }
     },
   )
 }

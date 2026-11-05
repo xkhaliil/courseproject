@@ -7,6 +7,7 @@ export interface Quiz {
 }
 
 export interface QuizResponse {
+  id: string
   outcomes: Outcome[]
   prompts: Prompt[]
 }
