@@ -1,20 +1,16 @@
-// builds the question with createElement:
-//  a heading with the text of the prompt
-//  the hint in a paragraph after it when there is one
-//  and a list of buttons, one for each option
-//    each with its label and its position in a data-index
-// It puts them in app, replacing what was there.
-// It returns a promise of the submission of the option that is clicked.
-//
-// One listener on the list finds the button with the target of the event and closest, removes itself, and resolves the promise with the submission of the option at the data-index.
-
 import { type Prompt, type Submission } from "@platform/quiz/play"
 import { optionsFor } from "./options.ts"
 
+// Shows the prompt in app with one button per option, under a line of
+// progress, and resolves with the submission of the option that is clicked.
 export default function ask(
   app: HTMLDivElement,
   prompt: Prompt,
+  progress: string,
 ): Promise<Submission> {
+  const progressLine = document.createElement("p")
+  progressLine.textContent = progress
+
   const heading = document.createElement("h2")
   heading.textContent = prompt.label
 
@@ -32,7 +28,7 @@ export default function ask(
     list.append(item)
   }
 
-  app.replaceChildren(heading, list)
+  app.replaceChildren(progressLine, heading, list)
 
   if (prompt.hint) {
     const hint = document.createElement("p")
