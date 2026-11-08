@@ -1,4 +1,4 @@
-import { type Submission } from "@platform/quiz/play"
+import { isQuizId, type Submission } from "@platform/quiz/play"
 import { type FastifyPluginAsync } from "fastify"
 
 import { toAnswer } from "./answer.ts"
@@ -18,7 +18,7 @@ const playPlugin: FastifyPluginAsync = async (fastify) => {
     "/play",
     async (request, reply) => {
       const name = request.body?.quiz
-      if (typeof name !== "string") {
+      if (!isQuizId(name)) {
         return reply.code(400).send({ error: 'The body needs a "quiz" name' })
       }
 
@@ -45,7 +45,7 @@ const playPlugin: FastifyPluginAsync = async (fastify) => {
     }
   })
 
-  fastify.post<{ Headers: SessionHeader; Body: Submission | undefined }>(
+  fastify.post<{ Headers: SessionHeader; Body: Submission }>(
     "/play/answer",
     async (request, reply) => {
       const session = getSession(request.headers["x-session-id"])
@@ -60,6 +60,7 @@ const playPlugin: FastifyPluginAsync = async (fastify) => {
 
       const submission = request.body
       if (!submission || submission.kind !== question.kind) {
+        // isSubmission
         return reply.code(400).send({ error: "That does not fit the question" })
       }
 
@@ -90,11 +91,10 @@ const playPlugin: FastifyPluginAsync = async (fastify) => {
       if (!session.finished) {
         try {
           session.state.finish()
+          session.finished = true
         } catch {
           return reply.code(409).send({ error: "No points have been scored" })
         }
-
-        session.finished = true
       }
 
       const { title, description } = session.state.result()

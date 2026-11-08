@@ -12,8 +12,8 @@ export async function apiRequest<Result, Body = never>({
   const response = await fetch(`http://localhost:3000${path}`, {
     method,
     headers: {
-      ...headers,
       ...(body ? { "content-type": "application/json" } : {}),
+      ...headers,
     },
     body: body ? JSON.stringify(body) : undefined,
   })
@@ -21,7 +21,7 @@ export async function apiRequest<Result, Body = never>({
   if (!response.ok) {
     const error = await response.json()
     console.error(error)
-    throw new Error("Something went wrong")
+    throw new Error(error.error ?? "Something went wrong")
   }
 
   const result = (await response.json()) as Result

@@ -39,8 +39,10 @@
     {
       "kind": "scale",
       "label": "How much do you enjoy trying new things?",
-      "low": "not at all",
-      "high": "a lot",
+      "min_label": "not at all",
+      "max_label": "a lot",
+      "min": 1,
+      "max": 5,
       "outcome": "farfalle"
     },
     {

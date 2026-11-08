@@ -14,10 +14,15 @@ export function optionsFor(prompt: Prompt): Option[] {
   }
 
   if (prompt.kind === "scale") {
-    return [1, 2, 3, 4, 5].map((value) => ({
-      label: String(value),
-      submission: { kind: "scale", value },
-    }))
+    return Array.from({ length: prompt.max - prompt.min + 1 }).map(
+      (_, index) => ({
+        label: `${index + prompt.min}`,
+        submission: {
+          kind: "scale",
+          value: index + prompt.min,
+        },
+      }),
+    )
   }
 
   if (prompt.kind === "yesno") {

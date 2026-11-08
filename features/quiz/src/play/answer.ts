@@ -48,12 +48,7 @@ export function isAnswer(value: unknown): value is Answer {
   }
 
   if (value.kind === "scale") {
-    return (
-      "value" in value &&
-      typeof value.value === "number" &&
-      value.value >= 1 &&
-      value.value <= 5
-    )
+    return "value" in value && typeof value.value === "number"
   }
 
   if (value.kind === "yesno") {

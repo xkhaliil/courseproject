@@ -19,13 +19,15 @@ export default async function ask(prompt: Prompt): Promise<Submission> {
 
   if (prompt.kind === "scale") {
     const value = await input({
-      message: `${message} (1 = ${prompt.low}, 5 = ${prompt.high})`,
+      message: `${message} (${prompt.min} = ${prompt.min_label}, ${prompt.max} = ${prompt.max_label})`,
       validate: (text) => {
         const number = Number(text)
 
-        return Number.isInteger(number) && number >= 1 && number <= 5
+        return Number.isInteger(number) &&
+          number >= prompt.min &&
+          number <= prompt.max
           ? true
-          : "Enter a whole number from 1 to 5"
+          : `Enter a whole number from ${prompt.min} to ${prompt.max}`
       },
     })
 

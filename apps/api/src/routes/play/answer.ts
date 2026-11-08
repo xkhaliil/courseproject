@@ -24,7 +24,11 @@ export function toAnswer(
 
   if (question.kind === "scale" && submission.kind === "scale") {
     const { value } = submission
-    if (typeof value === "number" && value >= 1 && value <= 5) {
+    if (
+      typeof value === "number" &&
+      value >= question.min &&
+      value <= question.max
+    ) {
       return {
         kind: "scale",
         value,

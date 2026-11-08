@@ -15,8 +15,10 @@ export function toPrompt(question: Question): Prompt {
       kind: "scale",
       label: question.label,
       hint: question.hint,
-      low: question.low,
-      high: question.high,
+      min_label: question.min_label,
+      max_label: question.max_label,
+      min: question.min,
+      max: question.max,
     }
   }
 

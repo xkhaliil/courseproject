@@ -28,6 +28,18 @@ export function isQuiz(value: unknown): value is Quiz {
     return false
   }
 
+  // TODO: call isQuestion
+
+  return true
+}
+
+export function isQuizId(value: unknown): value is string {
+  if (typeof value !== "string") {
+    return false
+  }
+
+  if (!value.match(/^[a-z0-9-]+$/i)) return false
+
   return true
 }
 

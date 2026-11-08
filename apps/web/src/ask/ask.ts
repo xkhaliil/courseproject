@@ -52,8 +52,8 @@ export default function ask(
       const option = options[index]
       if (!option) return
 
-      resolve(option.submission)
       list.removeEventListener("click", handleClick)
+      resolve(option.submission)
     }
 
     list.addEventListener("click", handleClick)

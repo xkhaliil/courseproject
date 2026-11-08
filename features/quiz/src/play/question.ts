@@ -12,8 +12,10 @@ interface ChoiceQuestion extends BaseQuestion {
 
 interface ScaleQuestion extends BaseQuestion {
   kind: "scale"
-  low: string
-  high: string
+  min_label: string
+  max_label: string
+  min: number
+  max: number
   outcome: string
 }
 
@@ -31,8 +33,10 @@ interface ChoicePrompt extends BaseQuestion {
 
 interface ScalePrompt extends BaseQuestion {
   kind: "scale"
-  low: string
-  high: string
+  min_label: string
+  max_label: string
+  min: number
+  max: number
 }
 
 interface YesNoPrompt extends BaseQuestion {
@@ -53,7 +57,7 @@ export function show(question: Question): string {
   }
 
   if (question.kind === "scale") {
-    return `${question.label} (1 = ${question.low}, 5 = ${question.high})${hint}`
+    return `${question.label} (${question.min} = ${question.min_label}, ${question.max} = ${question.max_label})${hint}`
   }
 
   if (question.kind === "yesno") {
