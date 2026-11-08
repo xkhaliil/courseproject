@@ -1,0 +1,7 @@
+{
+  "answers": [
+    { "kind": "choice", "picked": { "label": "A long walk" } },
+    { "kind": "scale", "value": 2 },
+    { "kind": "yesno", "value": true }
+  ]
+}
