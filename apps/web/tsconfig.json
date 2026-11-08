@@ -1,0 +1,5 @@
+{
+  "extends": "@platform/tooling/typescript",
+  "compilerOptions": {},
+  "include": ["src"]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@platform/web",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "pnpm run \"/^lint-.*/\"",
+    "lint-typecheck": "tsc",
+    "lint-prettier": "prettier --check .",
+    "lint-eslint": "eslint .",
+    "clean": "rm -rf node_modules/.cache tsconfig.tsbuildinfo dist",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@platform/quiz": "workspace:*"
+  },
+  "devDependencies": {
+    "@platform/tooling": "workspace:*",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:",
+    "vite": "^8.3.5"
+  }
+}

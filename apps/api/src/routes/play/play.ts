@@ -71,7 +71,7 @@ const playPlugin: FastifyPluginAsync = async (fastify) => {
       session.state.record(question, answer)
       session.answered += 1
 
-      return reply.code(204).send()
+      return reply.code(200).send({})
     },
   )
 
