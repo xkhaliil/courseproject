@@ -2,6 +2,7 @@ node_modules
 .DS_Store
 Thumbs.db
 tsconfig.tsbuildinfo
+dist
 
 .nx/cache
 .nx/workspace-data
