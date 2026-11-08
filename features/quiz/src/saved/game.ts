@@ -1,8 +1,8 @@
-import { isAnswer, type Answer } from "../play/index.ts"
+import { isSubmission, type Submission } from "../play/index.ts"
+import { readText } from "./read.ts"
 
 export interface SavedGame {
-  answers: Answer[]
-  startedAt?: string
+  answers: Submission[]
 }
 
 export function loadSavedGame(saved: string): SavedGame {
@@ -11,14 +11,18 @@ export function loadSavedGame(saved: string): SavedGame {
   try {
     value = JSON.parse(saved)
   } catch {
-    throw new Error("Invalid save file.")
+    throw new Error("The saved game is not valid JSON")
   }
 
   if (!isSavedGame(value)) {
-    throw new Error("Invalid save structure.")
+    throw new Error("The saved game does not have the shape of a saved game")
   }
 
   return value
+}
+
+export async function readSavedGame(file: string): Promise<SavedGame> {
+  return loadSavedGame(await readText(file, "saved game"))
 }
 
 function isSavedGame(value: unknown): value is SavedGame {
@@ -26,17 +30,9 @@ function isSavedGame(value: unknown): value is SavedGame {
     return false
   }
 
-  if (
-    !("answers" in value) ||
-    !Array.isArray(value.answers) ||
-    !value.answers.every((answer) => isAnswer(answer))
-  ) {
-    return false
-  }
-
-  if ("startedAt" in value && typeof value.startedAt !== "string") {
-    return false
-  }
-
-  return true
+  return (
+    "answers" in value &&
+    Array.isArray(value.answers) &&
+    value.answers.every(isSubmission)
+  )
 }

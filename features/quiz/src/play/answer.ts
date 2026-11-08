@@ -1,4 +1,4 @@
-import { isChoice, type Choice, type PromptChoice } from "./choice.ts"
+import { isPromptChoice, type Choice, type PromptChoice } from "./choice.ts"
 
 interface ChoiceAnswer {
   kind: "choice"
@@ -34,7 +34,7 @@ interface YesNoSubmission {
 
 export type Submission = ChoiceSubmission | ScaleSubmission | YesNoSubmission
 
-export function isAnswer(value: unknown): value is Answer {
+export function isSubmission(value: unknown): value is Submission {
   if (typeof value !== "object" || value === null) {
     return false
   }
@@ -44,7 +44,7 @@ export function isAnswer(value: unknown): value is Answer {
   }
 
   if (value.kind === "choice") {
-    return "picked" in value && isChoice(value.picked)
+    return "picked" in value && isPromptChoice(value.picked)
   }
 
   if (value.kind === "scale") {

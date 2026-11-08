@@ -1,15 +1,9 @@
 import { type Answer } from "./answer.ts"
-import { type Prompt, type Question } from "./question.ts"
+import { isQuestion, type Question } from "./question.ts"
 
 export interface Quiz {
   outcomes: Outcome[]
   questions: Question[]
-}
-
-export interface QuizResponse {
-  id: string
-  outcomes: Outcome[]
-  prompts: Prompt[]
 }
 
 export interface Award {
@@ -28,9 +22,38 @@ export function isQuiz(value: unknown): value is Quiz {
     return false
   }
 
-  // TODO: call isQuestion
+  if (
+    !("outcomes" in value) ||
+    !Array.isArray(value.outcomes) ||
+    value.outcomes.length === 0 ||
+    !value.outcomes.every(isOutcome)
+  ) {
+    return false
+  }
 
-  return true
+  if (
+    !("questions" in value) ||
+    !Array.isArray(value.questions) ||
+    value.questions.length === 0 ||
+    !value.questions.every(isQuestion)
+  ) {
+    return false
+  }
+
+  // Every outcome a question gives points to has to be one of the quiz's outcomes.
+  const ids = new Set(value.outcomes.map((outcome) => outcome.id))
+
+  return value.questions.every((question) =>
+    outcomesOf(question).every((id) => ids.has(id)),
+  )
+}
+
+function outcomesOf(question: Question): string[] {
+  if (question.kind === "choice") {
+    return question.choices.map((choice) => choice.outcome)
+  }
+
+  return [question.outcome]
 }
 
 export function isQuizId(value: unknown): value is string {
@@ -48,7 +71,14 @@ export function isOutcome(value: unknown): value is Outcome {
     return false
   }
 
-  return true
+  return (
+    "id" in value &&
+    typeof value.id === "string" &&
+    "title" in value &&
+    typeof value.title === "string" &&
+    "description" in value &&
+    typeof value.description === "string"
+  )
 }
 
 export function award(question: Question, answer: Answer): Award {

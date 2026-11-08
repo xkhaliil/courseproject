@@ -27,3 +27,11 @@ export function isChoice(value: unknown): value is Choice {
 
   return true
 }
+
+export function isPromptChoice(value: unknown): value is PromptChoice {
+  if (typeof value !== "object" || value === null) {
+    return false
+  }
+
+  return "label" in value && typeof value.label === "string"
+}
