@@ -13,7 +13,9 @@ export async function listQuizzes(): Promise<string[]> {
   return quizzes
 }
 
-export async function loadQuiz(name: string): Promise<Quiz> {
+// Returns undefined when there is no quiz with that name, and throws when the
+// file exists but does not hold a valid quiz.
+export async function loadQuiz(name: string): Promise<Quiz | undefined> {
   const file = path.join(import.meta.dirname, `${name}.json`)
 
   let text: string
@@ -22,7 +24,7 @@ export async function loadQuiz(name: string): Promise<Quiz> {
     text = await readFile(file, "utf8")
   } catch (error) {
     if (error instanceof Error && "code" in error && error.code === "ENOENT") {
-      throw new Error(`There is no quiz called "${name}".`, { cause: error })
+      return undefined
     }
 
     throw error
