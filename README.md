@@ -9,7 +9,7 @@ The project has three apps that work together. An HTTP API serves the quizzes an
 ## Requirements
 
 - Node.js 24 (the version in [.nvmrc](.nvmrc)). Node runs the TypeScript files directly, so the API and the CLI need no build step.
-- pnpm 12. The root [package.json](package.json) pins it with `devEngines`, and pnpm downloads the right version if yours differs.
+- pnpm 12. If you do not have pnpm, install it with `npm install --global pnpm`. The root [package.json](package.json) pins the version with `devEngines`, and pnpm downloads that version if yours differs.
 
 ## Getting started
 
@@ -48,14 +48,14 @@ To check the whole project, run `pnpm lint` from the root.
 
 Run these from the root. The lint scripts run the matching script in every package through Nx.
 
-| Script                | What it does                                                |
-| --------------------- | ----------------------------------------------------------- |
-| `pnpm lint`           | Runs every check below, with results cached by Nx           |
-| `pnpm lint-typecheck` | Type-checks each package with `tsc`                         |
-| `pnpm lint-eslint`    | Lints each package with ESLint                              |
-| `pnpm lint-prettier`  | Checks formatting with Prettier                             |
-| `pnpm clean`          | Removes build caches and resets Nx                          |
-| `pnpm start`          | Runs the CLI without a command, so it prints the CLI's help |
+| Script                | What it does                                      |
+| --------------------- | ------------------------------------------------- |
+| `pnpm lint`           | Runs every check below, with results cached by Nx |
+| `pnpm lint-typecheck` | Type-checks each package with `tsc`               |
+| `pnpm lint-eslint`    | Lints each package with ESLint                    |
+| `pnpm lint-prettier`  | Checks formatting with Prettier                   |
+| `pnpm clean`          | Removes build caches and resets Nx                |
+| `pnpm start`          | Prints the CLI's help, with its commands          |
 
 To run a script in one package only, use `--filter`, for example `pnpm --filter @platform/quiz lint`.
 
@@ -71,6 +71,7 @@ To run a script in one package only, use `--filter`, for example `pnpm --filter 
 ├── features/
 │   └── quiz/                 @platform/quiz, the quiz logic that the apps share
 │       └── src/
+│           ├── outline/      a one-line summary of each question, and a count of each kind
 │           ├── play/         types and checks for quizzes, answers, and API replies, scoring, and PlayState
 │           ├── quizzes/      quiz data (pasta.json), listQuizzes, and loadQuiz
 │           ├── saved/        reading and checking the saved game and settings files
@@ -115,9 +116,9 @@ While you work on the API, `pnpm --filter @platform/api dev` runs it with nodemo
 The command-line app in [apps/cli](apps/cli), built with [Commander](https://github.com/tj/commander.js). It has two commands, each in its own modlet under [src/commands](apps/cli/src/commands). Both take the quiz name as an argument, `pasta` by default.
 
 - `play` asks each question with [Inquirer](https://github.com/SBoudrias/Inquirer.js) prompts: a list for multiple choice, a typed whole number within the question's range for a scale, and a yes or no confirm. Its `--name <name>` option greets you before the first question.
-- `replay` plays the quiz again without asking, with the answers in [saved/game.json](apps/cli/saved/game.json), and greets the name in [saved/settings.json](apps/cli/saved/settings.json). It prints each question, the saved answer, and the result.
+- `replay` plays the quiz again without asking, with the answers in [saved/game.json](apps/cli/saved/game.json), and greets the name in [saved/settings.json](apps/cli/saved/settings.json). It prints an outline of the quiz, each question, a review of the saved answers, and the result.
 
-Run `pnpm --filter @platform/cli start --help` to see the commands and their options.
+Run `pnpm start` from the root, or `pnpm --filter @platform/cli start --help`, to see the commands and their options.
 
 ### `@platform/web`
 
@@ -125,9 +126,10 @@ A small web page in [apps/web](apps/web), served and built with [Vite](https://v
 
 ### `@platform/quiz`
 
-The quiz logic in [features/quiz](features/quiz), split into four modlets:
+The quiz logic in [features/quiz](features/quiz), split into five modlets:
 
-- **play** holds the types of a quiz, its questions, answers, and choices, with a runtime check for each. It also holds the types of the API's replies in `responses.ts`, `show` and `award` for each kind of question, and `PlayState`, which tallies points per outcome and picks the winner.
+- **outline** holds `outline`, its default export, which gives one line for each question, and `countKinds`, which counts the questions of each kind.
+- **play** holds the types of a quiz, its questions, answers, and choices, with a runtime check for each. It also holds the types of the API's replies in `responses.ts`, `show`, `award`, and `recap` for each kind of question, and `PlayState`, which tallies points per outcome and picks the winner.
 - **quizzes** holds the quiz data as JSON, `listQuizzes()`, which lists the JSON files in that folder, and `loadQuiz(name)`, which reads `<name>.json` and checks it.
 - **saved** holds `readSavedGame(file)` and `readSettings(file)`, which read those files and check them.
 - **services** holds `getQuiz`, `playStart`, `playProgress`, `playAnswer`, and `playResult`, which call the API at `http://localhost:3000` and check each reply. The CLI and the web app get all their data through them.
@@ -176,7 +178,6 @@ Each package has a GitHub Actions workflow in [.github/workflows](.github/workfl
 - `play` does not save your answers, so `replay` always replays the hand-written [game.json](apps/cli/saved/game.json).
 - The address of the API is fixed to `http://localhost:3000` in the services and the API.
 - There are no automated tests. The checks are the typecheck, ESLint, and Prettier.
-- `pnpm start` from the root only prints the CLI's help, because it runs the CLI without a command.
 
 ### What I would add next
 
@@ -187,18 +188,10 @@ Each package has a GitHub Actions workflow in [.github/workflows](.github/workfl
 - Keeping sessions in a file or a database, so they survive a restart.
 - A second quiz.
 
-## Windows note
+## Line endings
 
-If `pnpm lint-prettier` reports files you have not changed on Windows, Git has probably converted the line endings to CRLF on checkout, while Prettier expects LF. Tell Git to keep LF and check the files out again:
-
-```sh
-git config core.autocrlf input
-git rm --cached -r . -q
-git reset --hard
-```
-
-The last command discards uncommitted changes, so commit or stash your work first.
+Prettier expects LF line endings, so [.gitattributes](.gitattributes) makes Git check every file out with LF, on Windows too. If you cloned the project before that file existed, check the files out again once, after committing or stashing your work, with `git rm --cached -r . -q` and then `git reset --hard`.
 
 ## Credits
 
-The shared quiz, API, CLI, and web code follows the course example [christopherjbaker/example-monorepo-quiz](https://github.com/christopherjbaker/example-monorepo-quiz) step by step, and each of those commits names the example commit it follows. The replay command, the saved files, the checks, the error handling, the progress line, and the app workflows were added on top.
+The shared quiz, API, CLI, and web code follows the course example [christopherjbaker/example-monorepo-quiz](https://github.com/christopherjbaker/example-monorepo-quiz) step by step, and each of those commits names the example commit it follows. The replay command, the saved files, the outline, the recap, the checks, the error handling, the progress line, and the app workflows were added on top.
