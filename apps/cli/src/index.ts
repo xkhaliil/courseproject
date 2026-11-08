@@ -19,7 +19,12 @@ program
   .action(replay)
 
 try {
-  await program.parseAsync()
+  // Without a command, show the help instead of failing.
+  if (process.argv.length <= 2) {
+    program.outputHelp()
+  } else {
+    await program.parseAsync()
+  }
 } catch (error) {
   // Inquirer throws an ExitPromptError when the player presses Ctrl+C.
   if (error instanceof Error && error.name === "ExitPromptError") {

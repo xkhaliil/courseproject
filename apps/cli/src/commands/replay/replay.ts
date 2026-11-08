@@ -1,6 +1,7 @@
 import path from "node:path"
 
-import { show, type Submission } from "@platform/quiz/play"
+import outline, { countKinds as kinds } from "@platform/quiz/outline"
+import { recap, show } from "@platform/quiz/play"
 import { readSavedGame, readSettings } from "@platform/quiz/saved"
 import {
   getQuiz,
@@ -25,37 +26,42 @@ export default async function replay(name: string): Promise<void> {
   console.log(`Welcome back, ${settings.name}`)
   console.log()
 
+  const counts = Object.entries(kinds(quiz.prompts))
+    .map(([kind, count]) => `${kind} ${count}`)
+    .join(", ")
+
+  console.log("## Outline")
+  console.log()
+  console.log(outline(quiz.prompts).join("\n"))
+  console.log()
+  console.log(`Kinds: ${counts}`)
+  console.log()
+
+  console.log("## Questions")
+  console.log()
+
   const session_id = await playStart(quiz.id)
+  const review: string[] = []
 
   for (const [index, prompt] of quiz.prompts.entries()) {
     const submission = game.answers[index]
-    if (submission.kind !== prompt.kind) {
-      throw new Error(
-        `Saved answer ${index + 1} is a ${submission.kind} answer, but question ${index + 1} is a ${prompt.kind} question`,
-      )
-    }
+    review.push(recap(prompt, submission))
 
     console.log(show(prompt))
-    console.log(`Saved answer: ${describe(submission)}`)
     console.log()
 
     await playAnswer(session_id, submission)
   }
 
+  console.log("## Review")
+  console.log()
+  console.log(review.join("\n"))
+  console.log()
+
   const result = await playResult(session_id)
+
+  console.log("## Result")
+  console.log()
   console.log(`You are: ${result.title}`)
   console.log(result.description)
-  console.log()
-}
-
-function describe(submission: Submission): string {
-  if (submission.kind === "choice") {
-    return submission.picked.label
-  }
-
-  if (submission.kind === "scale") {
-    return `${submission.value}`
-  }
-
-  return submission.value ? "yes" : "no"
 }
